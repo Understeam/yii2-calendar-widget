@@ -1,0 +1,25 @@
+{
+  "name": "understeam/yii2-calendar-widget",
+  "description": "Yii2 calendar widget",
+  "type": "extension",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Anatoly Rugalev",
+      "email": "anatoly.rugalev@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "yiisoft/yii2": "^2.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "understeam\\calendar\\": "src",
+      "understeam\\unit\\calendar\\": "tests/unit"
+    }
+  }
+}
