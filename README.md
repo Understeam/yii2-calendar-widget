@@ -20,7 +20,7 @@ $ composer require understeam/yii2-calendar-widget:^0.1 --prefer-dist
 
 Для начала нужно понять - какую модель вы желаете отображать в календаре. Например,
 `app\models\Event`. Выбранная модель должна наследовать интерфейс
-`understeam\calendar\ItemInterface`, а так же добавить примесь (trait)
+`understeam\calendar\ItemInterface`, а так же использовать примесь (trait)
 `understeam\calendar\ActiveRecordItemTrait`
 
 ```php
@@ -30,7 +30,8 @@ namespace app\models;
 use understeam\calendar\ItemInterface;
 use understeam\calendar\ActiveRecordItemTrait;
 
-class Event extends \yii\db\ActiveRecord implements ItemInterface {
+class Event extends \yii\db\ActiveRecord implements ItemInterface
+{
     use ActiveRecordItemTrait;
 }
 ```
