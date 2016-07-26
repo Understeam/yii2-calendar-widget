@@ -43,7 +43,7 @@ class Event extends \yii\db\ActiveRecord implements ItemInterface {
         'dateAttribute' => 'date',                              // Атрибут модели, в котором хранится дата (тип в БД timestamp или datetime)
         'dateRange' => [time() + 86400, time() + 2592000]       // период, в который будет доступно событие onClick
         // Так же в dateRange можно передать функцию, которая должна вернуть нужный массив в случае если нужны динамические вычисления
-        // 'dateRage' => ['app\models\User', 'getCalendarRange'],
+        // 'dateRange' => ['app\models\User', 'getCalendarRange'],
     ],
 ],
 ```
@@ -60,7 +60,7 @@ public function actions() {
             'calendar' => 'calendar',           // ID компонента календаря (да, можно подключать несколько)
             'usePjax' => true,                  // Использовать ли pjax для ajax загрузки страниц
             'widgetOptions' => [                // Опции виджета (см. CalendarWidget)
-                'clientOptions' => [            // Опции JS плагина виджета
+                'clientOptions' => [            // Опции JS плагина виджета (пока только одна)
                     'onClick' => new JsExpression('showPopup'),   // JS функция, которая будет выполнена при клике на доступное время
                     // Эта функция принимает 2 параметра: date и time
                     // Для тестирования можно использовать следующий код:
@@ -82,11 +82,10 @@ public function actions() {
 * period - Объект `DatePeriod`, где начало и конец - это период, который выбран в календаре
 * calendar - Наследник `CalendarInterface`, компонент календаря
 
-Общую логику можно проследить в `CalendarAction`, но на самом деле лучше предложить
-решение через [создание нового issue](https://github.com/Understeam/yii2-calendar-widget/issues/new)
+Общую логику можно проследить в `CalendarAction`.
 
-Этот момент нужно будет улучшить в будущем. Один из вариантов - ввести сущность `CalendarGrid`,
-в которую вынести формирование сетки и методы для определения периодов
+Этот момент планируется улучшить путём введения сущности `CalendarGrid`, в которую будет
+вынесено формирование сетки и методы для определения периодов.
 
 ## Планы
 
