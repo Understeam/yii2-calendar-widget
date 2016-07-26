@@ -12,7 +12,7 @@ use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
 
 /**
- * Класс, который позволяет использовать ActiveRecord в качестве объекта календаря
+ * Класс, который позволяет легко использовать ActiveRecord в качестве объекта календаря
  * @author Anatoly Rugalev
  * @link https://github.com/AnatolyRugalev
  */
@@ -69,7 +69,7 @@ class ActiveRecordCalendar extends Component implements CalendarInterface
                     date('Y-m-d H:i:s', $endTime),
                 ],
             ]);
-        /** @var CalendarItemInterface[] $models */
+        /** @var ItemInterface[] $models */
         $models = $query->all();
         foreach ($models as $model) {
             $model->setCalendar($this);

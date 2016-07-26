@@ -21,7 +21,7 @@ class CalendarHelper
 
     /**
      * @param DatePeriod $period
-     * @param CalendarItemInterface[] $items
+     * @param ItemInterface[] $items
      * @param $xFormat
      * @param $yFormat
      * @return array
@@ -33,7 +33,7 @@ class CalendarHelper
         foreach ($period as $date) {
             $nextDate = clone $date;
             $nextDate->add($period->getDateInterval());
-            $cell = new CalendarGridCell($date);
+            $cell = new GridCell($date);
             foreach ($items as $item) {
                 $ts = (int)$item->getTimestamp();
                 if ($ts >= $date->getTimestamp() && $ts < $nextDate->getTimestamp()) {
@@ -47,7 +47,7 @@ class CalendarHelper
 
     /**
      * @param DatePeriod $period
-     * @param CalendarItemInterface[] $items
+     * @param ItemInterface[] $items
      * @return array
      */
     public static function composeMonthGrid(DatePeriod $period, $items)
@@ -57,7 +57,7 @@ class CalendarHelper
 
     /**
      * @param DatePeriod $period
-     * @param CalendarItemInterface[] $items
+     * @param ItemInterface[] $items
      * @return array
      */
     public static function composeWeekGrid(DatePeriod $period, $items)
@@ -114,6 +114,7 @@ class CalendarHelper
         $period = self::getMonthPeriod($dateString);
         /** @var DateTime $firstDay */
         $firstDay = $period->getStartDate();
+        /** @var DateTime $endDay */
         $endDay = $period->getEndDate();
         $startDate = clone $firstDay;
         $dayOfWeek = $startDate->format('N');

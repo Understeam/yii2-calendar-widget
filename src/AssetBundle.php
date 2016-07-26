@@ -8,11 +8,11 @@
 namespace understeam\calendar;
 
 /**
- * Class CalendarAsset TODO: Write class description
+ * Ассет бандл для календаря
  * @author Anatoly Rugalev
  * @link https://github.com/AnatolyRugalev
  */
-class CalendarAsset extends \yii\web\AssetBundle
+class AssetBundle extends \yii\web\AssetBundle
 {
 
     public $sourcePath = '@vendor/understeam/yii2-calendar-widget/src/assets';
@@ -26,6 +26,7 @@ class CalendarAsset extends \yii\web\AssetBundle
     ];
 
     public $depends = [
+        'yii\bootstrap\BootstrapAsset',
         'yii\web\JqueryAsset',
     ];
 

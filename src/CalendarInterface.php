@@ -27,7 +27,7 @@ interface CalendarInterface
      * Возвращает найденные модели в запрашиваемом промежутке времени
      * @param integer $fromTime
      * @param integer $toTime
-     * @return CalendarItemInterface[]
+     * @return ItemInterface[]
      */
     public function findItems($fromTime, $toTime);
 

@@ -8,11 +8,10 @@
 namespace understeam\calendar;
 
 /**
- * Interface CalendarItemInterface TODO: Write interface description
  * @author Anatoly Rugalev
  * @link https://github.com/AnatolyRugalev
  */
-interface CalendarItemInterface
+interface ItemInterface
 {
 
     /**

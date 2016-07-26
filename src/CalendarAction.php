@@ -30,11 +30,7 @@ class CalendarAction extends Action
      * @var string|CalendarInterface имя компонента календаря
      */
     public $calendar = 'calendar';
-    /**
-     * @var string класс модели, которая наследует CalendarItemInterface
-     */
-    public $modelClass;
-
+    
     /**
      * @var bool использовать Pjax для Ajax загрузки?
      */

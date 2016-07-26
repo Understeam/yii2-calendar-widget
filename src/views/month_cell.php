@@ -2,8 +2,8 @@
 /**
  * @var \understeam\calendar\CalendarWidget $context
  * @var \yii\web\View $this
- * @var \understeam\calendar\CalendarItemInterface $item
- * @var \understeam\calendar\CalendarGridCell $cell
+ * @var \understeam\calendar\ItemInterface $item
+ * @var \understeam\calendar\GridCell $cell
  */
 
 $context = $this->context;

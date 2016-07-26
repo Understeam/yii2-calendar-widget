@@ -4,7 +4,7 @@
  * @var array $widgetOptions
  * @var \yii\web\View $this
  */
-\understeam\calendar\CalendarAsset::register($this);
+\understeam\calendar\AssetBundle::register($this);
 ?>
 <div class="row">
     <div class="col-md-12">

@@ -14,7 +14,7 @@ use yii\base\Object;
  * @author Anatoly Rugalev
  * @link https://github.com/AnatolyRugalev
  */
-class CalendarGridCell extends Object
+class GridCell extends Object
 {
 
     public $date;
@@ -27,7 +27,7 @@ class CalendarGridCell extends Object
         $this->date = $date;
     }
 
-    public function addItem(CalendarItemInterface $item)
+    public function addItem(ItemInterface $item)
     {
         $this->items[] = $item;
     }

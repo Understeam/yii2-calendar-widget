@@ -10,11 +10,10 @@ namespace understeam\calendar;
 use Yii;
 
 /**
- * Class CalendarItemTrait TODO: Write class description
  * @author Anatoly Rugalev
  * @link https://github.com/AnatolyRugalev
  */
-trait ActiveRecordCalendarItemTrait
+trait ActiveRecordItemTrait
 {
 
     /**
