@@ -8,7 +8,7 @@
 Установка производится через [Composer](https://getcomposer.org):
 
 ```
-$ composer require understeam/yii2-calendar-widget --prefer-dist
+$ composer require understeam/yii2-calendar-widget:^0.1 --prefer-dist
 ```
 
 После этого компонент будет установлен в директорию vendor, а его классы будут
