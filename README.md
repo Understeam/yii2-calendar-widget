@@ -1,5 +1,7 @@
 # Yii2 Calendar Component
 
+[![Latest Stable Version](https://poser.pugx.org/understeam/yii2-calendar-widget/v/stable)](https://packagist.org/packages/understeam/yii2-calendar-widget)
+
 Компонент предназначен для отображения данных внутри календаря с разбивкой
 по неделям или месяцам.
 
