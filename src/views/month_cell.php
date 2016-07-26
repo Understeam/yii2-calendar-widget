@@ -2,27 +2,21 @@
 /**
  * @var \understeam\calendar\CalendarWidget $context
  * @var \yii\web\View $this
- * @var \understeam\calendar\CalendarItemInterface|CalendarPhotoItemInterface $item
+ * @var \understeam\calendar\CalendarItemInterface $item
  * @var \understeam\calendar\CalendarGridCell $cell
  */
-use understeam\calendar\CalendarPhotoItemInterface;
 
+$context = $this->context;
+$currentMonth = $context->isInPeriod($cell->date);
+$isActive = $context->isActive($cell->date);
 ?>
-<div class="calendar-month-day">
+<div class="calendar-month-cell">
     <div class="panel panel-default">
-        <div class="panel-heading calendar-day-heading">
+        <div class="panel-heading">
             <?= $cell->date->format('d') ?>
         </div>
-        <div class="panel-body calendar-day-body">
-            <?php foreach ($cell->items as $item): ?>
-                <div>
-                    <?php if ($item instanceof CalendarPhotoItemInterface): ?>
-                        <?= \yii\helpers\Html::a('image', $item->getImageUrl(), ['target' => '_blank', 'data-pjax' => 0]) ?>
-                    <?php else: ?>
-                        <i class="glyphicon glyphicon-question-sign"></i>
-                    <?php endif; ?>
-                </div>
-            <?php endforeach; ?>
+        <div class="panel-body<?=$isActive ? ' active' : '' ?><?=$currentMonth ? '' : ' out' ?>" data-cal-date="<?=$cell->date->format('Y-m-d') ?>">
+            <?= count($cell->items) ?>
         </div>
     </div>
 </div>

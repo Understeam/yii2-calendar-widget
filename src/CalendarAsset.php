@@ -22,7 +22,11 @@ class CalendarAsset extends \yii\web\AssetBundle
     ];
 
     public $js = [
-        
+        'js/yii.calendar.js',
+    ];
+
+    public $depends = [
+        'yii\web\JqueryAsset',
     ];
 
 }

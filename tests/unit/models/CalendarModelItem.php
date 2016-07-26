@@ -18,46 +18,35 @@ use yii\base\Model;
 class CalendarModelItem extends Model implements CalendarItemInterface
 {
 
-    private $_date;
+    public $date;
 
     public function __construct($date, array $config = [])
     {
-        $this->_date = $date;
+        $this->date = $date;
         parent::__construct($config);
     }
 
     /**
-     * @return integer timestamp записи в календаре
+     * @inheritdoc
      */
     public function getTimestamp()
     {
-        return strtotime($this->_date);
+        return strtotime($this->date);
     }
 
     /**
-     * @return string URL миниатюры изображения для вставки в календарь
-     */
-    public function getImageUrl()
-    {
-        return '';
-    }
-
-    /**
-     * @return mixed первичный ключ записи (определён в ActiveRecord)
-     */
-    public function getPrimaryKey()
-    {
-        return 1;
-    }
-
-    /**
-     * Возвращает найденные модели в запрашиваемом промежутке времени
-     * @param integer $fromTime
-     * @param integer $toTime
-     * @return \understeam\calendar\CalendarItemInterface[]
+     * @inheritdoc
      */
     public static function findCalendarModels($fromTime, $toTime)
     {
         // TODO: Implement findCalendarModels() method. 
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function getAllowedDateRange()
+    {
+        return [time() + 360 * 24, time() + 3600 * 24 * 30];
     }
 }

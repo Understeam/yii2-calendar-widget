@@ -6,6 +6,7 @@
  */
 
 namespace understeam\calendar;
+
 use yii\base\Object;
 
 /**
@@ -31,4 +32,9 @@ class CalendarGridCell extends Object
         $this->items[] = $item;
     }
 
+    public function isInRange($startDate, $endDate)
+    {
+        $ts = $this->date->getTimestamp();
+        return $ts >= $startDate && $ts < $endDate;
+    }
 }

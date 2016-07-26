@@ -22,14 +22,14 @@ class CalendarActionForm extends Model
     public $date;
 
     /**
-     * @var CalendarItemInterface
+     * @var CalendarInterface
      */
-    private $_modelClass;
+    public $calendar;
 
-    public function __construct($modelClass, array $config = [])
+    public function __construct(CalendarInterface $calendar, array $config = [])
     {
         parent::__construct($config);
-        $this->_modelClass = $modelClass;
+        $this->calendar = $calendar;
     }
 
     public function formName()
@@ -40,9 +40,9 @@ class CalendarActionForm extends Model
     public function rules()
     {
         return [
-            ['viewMode', 'default', 'value' => CalendarWidget::VIEW_MODE_MONTH],
+            ['viewMode', 'default', 'value' => CalendarInterface::VIEW_MODE_MONTH],
             ['date', 'default', 'value' => date('Y-m-d')],
-            ['viewMode', 'in', 'range' => [CalendarWidget::VIEW_MODE_MONTH, CalendarWidget::VIEW_MODE_WEEK]],
+            ['viewMode', 'in', 'range' => [CalendarInterface::VIEW_MODE_MONTH, CalendarInterface::VIEW_MODE_WEEK]],
             ['date', 'date', 'format' => 'php:Y-m-d'],
         ];
     }
@@ -52,7 +52,7 @@ class CalendarActionForm extends Model
      */
     public function getPeriod()
     {
-        if ($this->viewMode == CalendarWidget::VIEW_MODE_MONTH) {
+        if ($this->viewMode == CalendarInterface::VIEW_MODE_MONTH) {
             return CalendarHelper::getMonthPeriod($this->date);
         } else {
             return CalendarHelper::getWeekPeriod($this->date);
@@ -64,7 +64,7 @@ class CalendarActionForm extends Model
      */
     public function getDisplayPeriod()
     {
-        if ($this->viewMode == CalendarWidget::VIEW_MODE_MONTH) {
+        if ($this->viewMode == CalendarInterface::VIEW_MODE_MONTH) {
             return CalendarHelper::getMonthDisplayPeriod($this->date);
         } else {
             return CalendarHelper::getWeekDisplayPeriod($this->date);
@@ -77,12 +77,11 @@ class CalendarActionForm extends Model
     public function getGrid()
     {
         $period = $this->getDisplayPeriod();
-        $modelClass = $this->_modelClass;
-        $models = $modelClass::findCalendarModels(
+        $models = $this->calendar->findItems(
             $period->getStartDate()->getTimestamp(),
             $period->getEndDate()->getTimestamp()
         );
-        if ($this->viewMode == CalendarWidget::VIEW_MODE_MONTH) {
+        if ($this->viewMode == CalendarInterface::VIEW_MODE_MONTH) {
             $grid = CalendarHelper::composeMonthGrid($period, $models);
         } else {
             $grid = CalendarHelper::composeWeekGrid($period, $models);

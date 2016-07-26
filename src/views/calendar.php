@@ -1,8 +1,7 @@
 <?php
 /**
- * @var \understeam\calendar\CalendarActionForm $model
- * @var array $grid
  * @var boolean $usePjax
+ * @var array $widgetOptions
  * @var \yii\web\View $this
  */
 \understeam\calendar\CalendarAsset::register($this);
@@ -14,11 +13,7 @@
                 'id' => 'calendar-pjax',
             ]); ?>
         <?php endif; ?>
-        <?= \understeam\calendar\CalendarWidget::widget([
-            'grid' => $model->getGrid(),
-            'viewMode' => $model->viewMode,
-            'period' => $model->getPeriod(),
-        ]) ?>
+        <?= \understeam\calendar\CalendarWidget::widget($widgetOptions) ?>
         <?php if ($usePjax): ?>
             <?php \yii\widgets\Pjax::end(); ?>
         <?php endif; ?>

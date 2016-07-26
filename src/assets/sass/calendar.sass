@@ -1,0 +1,84 @@
+@mixin cell-active
+  cursor: pointer
+  position: relative
+  background-color: #ffffff
+  &:hover
+    background:
+      color: #e9f4ff
+    &::after
+      position: absolute
+      left: 10%
+      top: 10%
+      width: 80%
+      height: 80%
+      background:
+        image: url(data:image/png;base64,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)
+        position: center, center
+        size: contain
+        repeat: no-repeat
+
+@mixin calendar-heading
+  text-align: center
+
+@mixin cell
+  float: left
+  position: relative
+  min-height: 1px
+  padding-right: 15px
+  padding-left: 15px
+  box-sizing: border-box
+
+@mixin week-cell
+  width: 12.5%
+  @include cell
+
+@mixin month-cell
+  width: 14.2%
+  @include cell
+
+@mixin panel-cell($height, $fontSize)
+  height: $height
+  padding: 0
+  text-align: center
+  line-height: $height
+  font-size: $fontSize
+  background-color: #ffedee
+
+@mixin header
+  text-align: center
+  text-transform: uppercase
+  font-size: 20px
+
+.calendar-month-header-cell
+  @include month-cell
+  @include header
+
+.calendar-week-header-cell
+  @include week-cell
+  @include header
+
+.calendar-month-cell
+  @include month-cell
+  .panel-heading
+    position: absolute !important
+    padding: 3px !important
+    border-right: 1px solid #ddd !important
+    border-radius: 3px !important
+    z-index: 1
+  .panel-body
+    @include panel-cell(90px, 30px)
+    &.active
+      @include cell-active
+    &.out
+      background-color: #eccccc
+      &.active
+        background-color: #ececec
+
+.calendar-week-column
+  @include week-cell
+  .panel-body
+    @include panel-cell(50px, 20px)
+  .calendar-week-cell
+    .panel-body
+      &.active
+        @include cell-active

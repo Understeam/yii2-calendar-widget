@@ -21,11 +21,12 @@ interface CalendarItemInterface
     public function getTimestamp();
 
     /**
-     * Возвращает найденные модели в запрашиваемом промежутке времени
-     * @param integer $fromTime
-     * @param integer $toTime
-     * @return CalendarItemInterface[]
+     * @return CalendarInterface
      */
-    public static function findCalendarModels($fromTime, $toTime);
+    public function getCalendar();
 
+    /**
+     * @param CalendarInterface $calendar
+     */
+    public function setCalendar(CalendarInterface $calendar);
 }

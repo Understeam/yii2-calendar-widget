@@ -18,12 +18,15 @@ use DateTime;
  */
 class CalendarHelper
 {
+
     /**
      * @param DatePeriod $period
      * @param CalendarItemInterface[] $items
+     * @param $xFormat
+     * @param $yFormat
      * @return array
      */
-    public static function composeMonthGrid(DatePeriod $period, $items)
+    public static function composeGrid(DatePeriod $period, $items, $xFormat, $yFormat)
     {
         $grid = [];
         /** @var DateTime $date */
@@ -37,7 +40,7 @@ class CalendarHelper
                     $cell->addItem($item);
                 }
             }
-            $grid[$date->format('W')][$date->format('N')] = $cell;
+            $grid[$date->format($xFormat)][$date->format($yFormat)] = $cell;
         }
         return $grid;
     }
@@ -47,23 +50,19 @@ class CalendarHelper
      * @param CalendarItemInterface[] $items
      * @return array
      */
+    public static function composeMonthGrid(DatePeriod $period, $items)
+    {
+        return self::composeGrid($period, $items, 'W', 'N');
+    }
+
+    /**
+     * @param DatePeriod $period
+     * @param CalendarItemInterface[] $items
+     * @return array
+     */
     public static function composeWeekGrid(DatePeriod $period, $items)
     {
-        $grid = [];
-        /** @var DateTime $date */
-        foreach ($period as $date) {
-            $nextDate = clone $date;
-            $nextDate->add($period->getDateInterval());
-            $cell = new CalendarGridCell($date);
-            foreach ($items as $item) {
-                $ts = (int)$item->getTimestamp();
-                if ($ts >= $date->getTimestamp() && $ts < $nextDate->getTimestamp()) {
-                    $cell->addItem($item);
-                }
-            }
-            $grid[$date->format('N')][$date->format('H:i')] = $cell;
-        }
-        return $grid;
+        return self::composeGrid($period, $items, 'N', 'H:i');
     }
 
     /**

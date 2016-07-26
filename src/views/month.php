@@ -10,15 +10,15 @@ echo $this->render('header');
 $context = $this->context;
 $firstWeek = reset($grid);
 ?>
-<div class="row calendar-month">
+<div class="row">
     <?php foreach ($firstWeek as $column => $day): ?>
-        <div class="calendar-month-day text-center">
+        <div class="calendar-month-header-cell">
             <?= Yii::$app->formatter->asDate($day->date->getTimestamp(), 'E') ?>
             <?php
             $count = CalendarHelper::getMonthColumnCount($grid, $column);
             ?>
             <?php if ($count > 0): ?>
-                <b>(<?= $count ?>)</b>
+                <span class="badge"><?= $count ?></span>
             <?php endif; ?>
         </div>
     <?php endforeach; ?>

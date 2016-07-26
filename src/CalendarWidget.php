@@ -7,8 +7,11 @@
 
 namespace understeam\calendar;
 
+use DateTime;
 use Yii;
 use yii\base\Widget;
+use yii\helpers\Html;
+use yii\helpers\Json;
 
 /**
  * Виджет для отображения календаря
@@ -22,9 +25,14 @@ class CalendarWidget extends Widget
 {
 
     /**
-     * @var array Сетка моделей для отображения
+     * @var array сетка моделей для отображения
      */
     public $grid;
+
+    /**
+     * @var CalendarInterface компонент календаря
+     */
+    public $calendar;
 
     /**
      * @var string View файл для режима "неделя"
@@ -47,16 +55,6 @@ class CalendarWidget extends Widget
     public $monthCellView = '@vendor/understeam/yii2-calendar-widget/src/views/month_cell';
 
     /**
-     * Режим просмотра - "месяц"
-     */
-    const VIEW_MODE_MONTH = 'month';
-
-    /**
-     * Режим просмотра - "неделя"
-     */
-    const VIEW_MODE_WEEK = 'week';
-
-    /**
      * @var string устанавливает режим просмотра
      */
     public $viewMode;
@@ -75,15 +73,22 @@ class CalendarWidget extends Widget
 
     public $actionViewModeParam = 'viewMode';
 
-    public $usePjax = true;
+    public $clientOptions = [];
 
     public function run()
     {
-        if ($this->viewMode == self::VIEW_MODE_WEEK) {
-            return $this->renderWeek();
+        $this->registerAssets();
+        $result = Html::beginTag('div', [
+            'class' => 'calendar-widget',
+            'id' => $this->getId()
+        ]);
+        if ($this->viewMode == CalendarInterface::VIEW_MODE_WEEK) {
+            $result .= $this->renderWeek();
         } else {
-            return $this->renderMonth();
+            $result .= $this->renderMonth();
         }
+        $result .= Html::endTag('div');
+        return $result;
     }
 
     public function renderWeek()
@@ -113,7 +118,7 @@ class CalendarWidget extends Widget
     {
         $url = $this->getActionUrl();
         $url[$this->actionDateParam] = $this->period->getStartDate()->format('Y-m-d');
-        $url[$this->actionViewModeParam] = self::VIEW_MODE_WEEK;
+        $url[$this->actionViewModeParam] = CalendarInterface::VIEW_MODE_WEEK;
         return $url;
     }
 
@@ -121,7 +126,7 @@ class CalendarWidget extends Widget
     {
         $url = $this->getActionUrl();
         $url[$this->actionDateParam] = $this->period->getEndDate()->sub(new \DateInterval('P1D'))->format('Y-m-d');
-        $url[$this->actionViewModeParam] = self::VIEW_MODE_MONTH;
+        $url[$this->actionViewModeParam] = CalendarInterface::VIEW_MODE_MONTH;
         return $url;
     }
 
@@ -156,7 +161,7 @@ class CalendarWidget extends Widget
     {
         /** @var \DateTime $date */
         $date = $this->period->getStartDate();
-        $date->sub(new \DateInterval($this->viewMode == self::VIEW_MODE_WEEK ? 'P7D' : 'P1M'));
+        $date->sub(new \DateInterval($this->viewMode == CalendarInterface::VIEW_MODE_WEEK ? 'P7D' : 'P1M'));
         return $date;
     }
 
@@ -189,5 +194,34 @@ class CalendarWidget extends Widget
             $string .= ' ' . implode(' ', $common);
         }
         return $string;
+    }
+
+    protected function registerAssets()
+    {
+        $id = $this->getId();
+        $options = Json::htmlEncode($this->clientOptions);
+        $view = $this->getView();
+        $view->registerJs("jQuery('#$id').yiiCalendar($options);");
+    }
+
+    public function isInPeriod(DateTime $date)
+    {
+        return $date->getTimestamp() >= $this->period->getStartDate()->getTimestamp()
+        && $date->getTimestamp() < $this->period->getEnddate()->getTimestamp();
+    }
+
+    public function isActive(DateTime $date)
+    {
+        $bounds = $this->calendar->getAllowedDateRange();
+        $startTs = isset($bounds[0]) ? $bounds[0] : null;
+        $endTs = isset($bounds[1]) ? $bounds[1] : null;
+        $condition = true;
+        if ($startTs !== null) {
+            $condition = $condition && $date->getTimestamp() >= $startTs;
+        }
+        if ($endTs !== null) {
+            $condition = $condition && $date->getTimestamp() < $endTs;
+        }
+        return $condition;
     }
 }
