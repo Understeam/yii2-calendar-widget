@@ -1,4 +1,4 @@
-# Yii2 Calendar Component
+# Yii2 Calendar Widget
 
 [![Latest Stable Version](https://poser.pugx.org/understeam/yii2-calendar-widget/v/stable)](https://packagist.org/packages/understeam/yii2-calendar-widget)
 
