@@ -35,6 +35,11 @@ class CalendarWidget extends Widget
     public $calendar;
 
     /**
+     * @var string View файл заголовка
+     */
+    public $headerView = '@vendor/understeam/yii2-calendar-widget/src/views/header';
+
+    /**
      * @var string View файл для режима "неделя"
      */
     public $weekView = '@vendor/understeam/yii2-calendar-widget/src/views/week';

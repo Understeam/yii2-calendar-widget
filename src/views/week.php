@@ -6,8 +6,8 @@
  */
 use understeam\calendar\CalendarHelper;
 
-echo $this->render('header');
 $context = $this->context;
+echo $this->render($context->headerView);
 ?>
 <div class="row">
     <div class="calendar-week-header-cell"></div>
