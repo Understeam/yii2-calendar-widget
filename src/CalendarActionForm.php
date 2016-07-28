@@ -48,7 +48,7 @@ class CalendarActionForm extends Model
     }
 
     /**
-     * @return \DatePeriod
+     * @return DatePeriod
      */
     public function getPeriod()
     {
@@ -60,7 +60,7 @@ class CalendarActionForm extends Model
     }
 
     /**
-     * @return \DatePeriod
+     * @return DatePeriod
      */
     public function getDisplayPeriod()
     {

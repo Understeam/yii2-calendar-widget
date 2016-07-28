@@ -8,7 +8,6 @@
 namespace understeam\calendar;
 
 use DateInterval;
-use DatePeriod;
 use DateTime;
 
 /**

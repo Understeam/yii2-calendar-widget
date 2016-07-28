@@ -65,7 +65,7 @@ class CalendarWidget extends Widget
     public $viewMode;
 
     /**
-     * @var \DatePeriod период времени, который следует отобразить
+     * @var DatePeriod период времени, который следует отобразить
      */
     public $period;
 

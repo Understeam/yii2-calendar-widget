@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \DatePeriod $period
+ * @var \understeam\calendar\DatePeriod $period
  * @var CalendarWidget $context
  * @var \yii\web\View $this
  */
