@@ -11,14 +11,12 @@ use DateInterval;
 use DateTimeInterface;
 
 /**
- * Обёртка для совместимости с PHP 5.4
+ * PHP реализация класса DatePeriod как в PHP 5.6.3
  * @author Anatoly Rugalev
  * @link https://github.com/AnatolyRugalev
  */
 class DatePeriod implements \Iterator
 {
-
-    private $_datePeriod;
 
     private $_dateInterval;
 
@@ -31,7 +29,6 @@ class DatePeriod implements \Iterator
         $this->_dateInterval = $interval;
         $this->_startDate = $start;
         $this->_endDate = $end;
-        $this->_datePeriod = new \DatePeriod($start, $interval, $end, $options);
     }
 
     public function getDateInterval()
@@ -41,12 +38,12 @@ class DatePeriod implements \Iterator
 
     public function getEndDate()
     {
-        return $this->_endDate;
+        return clone $this->_endDate;
     }
 
     public function getStartDate()
     {
-        return $this->_startDate;
+        return clone $this->_startDate;
     }
 
     /**
@@ -76,6 +73,7 @@ class DatePeriod implements \Iterator
         if ($this->_current === null) {
             $this->_current = clone $this->_startDate;
         } else {
+            $this->_current = clone $this->_current;
             $this->_current->add($this->_dateInterval);
         }
     }
