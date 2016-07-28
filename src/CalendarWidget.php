@@ -80,6 +80,10 @@ class CalendarWidget extends Widget
 
     public $clientOptions = [];
 
+    public $activeClass = 'active';
+    public $futureClass = 'future';
+    public $pastClass = 'past';
+
     public function run()
     {
         $this->registerAssets();
@@ -204,6 +208,11 @@ class CalendarWidget extends Widget
     protected function registerAssets()
     {
         $id = $this->getId();
+
+        $this->clientOptions['pastClass'] = $this->pastClass;
+        $this->clientOptions['activeClass'] = $this->activeClass;
+        $this->clientOptions['futureClass'] = $this->futureClass;
+
         $options = Json::htmlEncode($this->clientOptions);
         $view = $this->getView();
         $view->registerJs("jQuery('#$id').yiiCalendar($options);");
@@ -212,21 +221,51 @@ class CalendarWidget extends Widget
     public function isInPeriod(DateTime $date)
     {
         return $date->getTimestamp() >= $this->period->getStartDate()->getTimestamp()
-        && $date->getTimestamp() < $this->period->getEnddate()->getTimestamp();
+        && $date->getTimestamp() < $this->period->getEndDate()->getTimestamp();
+    }
+
+    public function getAllowedDateRange()
+    {
+        $bounds = $this->calendar->getAllowedDateRange();
+        $bounds[0] = isset($bounds[0]) ? $bounds[0] : null;
+        $bounds[1] = isset($bounds[1]) ? $bounds[1] : null;
+        return $bounds;
     }
 
     public function isActive(DateTime $date)
     {
-        $bounds = $this->calendar->getAllowedDateRange();
-        $startTs = isset($bounds[0]) ? $bounds[0] : null;
-        $endTs = isset($bounds[1]) ? $bounds[1] : null;
-        $condition = true;
-        if ($startTs !== null) {
-            $condition = $condition && $date->getTimestamp() >= $startTs;
+        return !$this->isFuture($date) && !$this->isPast($date);
+    }
+
+    public function isFuture(DateTime $date)
+    {
+        $bounds = $this->getAllowedDateRange();
+        return $bounds[1] !== null && $date->getTimestamp() >= $bounds[1];
+    }
+
+    public function isPast(DateTime $date)
+    {
+        $bounds = $this->getAllowedDateRange();
+        return $bounds[0] !== null && $date->getTimestamp() < $bounds[0];
+    }
+
+    public function getCellOptions(GridCell $cell, $addTime = false)
+    {
+        $options = [
+            'data-cal-date' => $cell->date->format('Y-m-d' . ($addTime ? ' H:i' : '')),
+        ];
+        if (!$this->isInPeriod($cell->date)) {
+            Html::addCssClass($options, 'out');
         }
-        if ($endTs !== null) {
-            $condition = $condition && $date->getTimestamp() < $endTs;
+        if ($this->isActive($cell->date)) {
+            Html::addCssClass($options, $this->activeClass);
         }
-        return $condition;
+        if ($this->isFuture($cell->date)) {
+            Html::addCssClass($options, $this->futureClass);
+        }
+        if ($this->isPast($cell->date)) {
+            Html::addCssClass($options, $this->pastClass);
+        }
+        return $options;
     }
 }

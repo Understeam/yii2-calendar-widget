@@ -6,13 +6,16 @@
  * @var \understeam\calendar\GridCell $cell
  */
 
+use yii\helpers\Html;
+
 $context = $this->context;
-$isActive = $context->isActive($cell->date);
+$options = $context->getCellOptions($cell, true);
+Html::addCssClass($options, 'panel-body');
 ?>
 <div class="calendar-week-cell">
     <div class="panel panel-default">
-        <div class="panel-body<?=$isActive ? ' active' : '' ?>" data-cal-date="<?=$cell->date->format('Y-m-d H:i') ?>">
-            <?= count($cell->items) ?>
-        </div>
+        <?= Html::beginTag('div', $options) ?>
+        <?= count($cell->items) ?>
+        <?= Html::endTag('div') ?>
     </div>
 </div>

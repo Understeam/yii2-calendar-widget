@@ -12,7 +12,13 @@
 
     var defaults = {
         itemSelector: '[data-cal-date]',
-        onClick: undefined
+        futureClass: 'future',
+        pastClass: 'past',
+        activeClass: 'active',
+        hoverClass: 'hover',
+        onClick: undefined,
+        onFutureClick: undefined,
+        onPastClick: undefined
     };
 
     var calendarData = {};
@@ -30,17 +36,30 @@
                 calendarData[id] = $.extend(calendarData[id], {settings: settings});
 
                 $(document)
+                    .off('mouseover.yiiCalendar', settings.itemSelector)
+                    .off('mouseleave.yiiCalendar', settings.itemSelector)
                     .off('click.yiiCalendar', settings.itemSelector)
-                    .on('click.yiiCalendar', settings.itemSelector, function (event) {
-                        if (settings.onClick === undefined) {
-                            return;
+                    .on('mouseover.yiiCalendar', settings.itemSelector, function (event) {
+                        var item = $(this);
+                        if (
+                            item.hasClass(settings.activeClass)
+                            ||
+                            (typeof settings.onPastClick == 'function' && item.hasClass(settings.pastClass))
+                            ||
+                            (typeof settings.onFutureClick == 'function' && item.hasClass(settings.futureClass))
+                        ) {
+                            item.addClass(settings.hoverClass);
+                            item.css('cursor', 'pointer');
                         }
+                    })
+                    .on('mouseleave.yiiCalendar', settings.itemSelector, function (event) {
+                        var item = $(this);
+                        item.removeClass(settings.hoverClass);
+                        item.css('cursor', false);
+                    })
+                    .on('click.yiiCalendar', settings.itemSelector, function (event) {
                         event.preventDefault();
                         var item = $(this);
-                        var isActive = item.hasClass('active');
-                        if (!isActive) {
-                            return;
-                        }
                         var date = item.attr('data-cal-date');
                         if (!date) {
                             console.warn("data-cal-date attribute is not set");
@@ -49,7 +68,13 @@
                         var parts = date.split(' ');
                         date = parts[0];
                         var time = parts[1] || undefined;
-                        settings.onClick(date, time);
+                        if (typeof settings.onClick == 'function' && item.hasClass(settings.activeClass)) {
+                            settings.onClick(date, time);
+                        } else if (typeof settings.onFutureClick == 'function' && item.hasClass(settings.futureClass)) {
+                            settings.onFutureClick(date, time);
+                        } else if (typeof settings.onPastClick == 'function' && item.hasClass(settings.pastClass)) {
+                            settings.onPastClick(date, time);
+                        }
                     });
             });
         }
