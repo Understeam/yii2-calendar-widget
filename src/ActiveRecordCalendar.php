@@ -82,11 +82,11 @@ class ActiveRecordCalendar extends Component implements CalendarInterface
      */
     public function getAllowedDateRange()
     {
-        if (is_array($this->dateRange)) {
-            return $this->dateRange;
-        }
         if (is_callable($this->dateRange)) {
             return call_user_func($this->dateRange);
+        }
+        if (is_array($this->dateRange)) {
+            return $this->dateRange;
         }
         throw new InvalidConfigException("ActiveRecordCalendar::\$dateRange must be array or callable");
     }
