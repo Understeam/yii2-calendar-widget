@@ -47,6 +47,15 @@ class Event extends \yii\db\ActiveRecord implements ItemInterface
         'dateRange' => [time() + 86400, time() + 2592000]       // период, в который будет доступно событие onClick
         // Так же в dateRange можно передать функцию, которая должна вернуть нужный массив в случае если нужны динамические вычисления
         // 'dateRange' => ['app\models\User', 'getCalendarRange'],
+        'filter' => [ // Фильтр ActiveQuery, который будет применён. Возможно указывать callable для фильтрации
+            'status' => 1,
+        ],
+        // Пример
+        // 'filter' => function ($query, $startTime, $endTime) {
+        //     return $query->andWhere(['userId' => Yii::$app->user->id]);
+        // },
+        // Или так
+        // 'filter' => ['app\models\User', 'filterCalendarQuery'],
     ],
 ],
 ```

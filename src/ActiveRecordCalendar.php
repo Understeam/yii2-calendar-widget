@@ -9,6 +9,7 @@ namespace understeam\calendar;
 
 use yii\base\Component;
 use yii\base\InvalidConfigException;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -30,9 +31,19 @@ class ActiveRecordCalendar extends Component implements CalendarInterface
     public $dateAttribute = 'date';
 
     /**
-     * @var array|callable
+     * @var array|callable период доступных дат
      */
     public $dateRange = [];
+
+    /**
+     * @var array|callable фильтр для выборки. Передавать можно как массив ['attribute' => 'value'], так и callable.
+     * В случае с callable результирующая функция должна иметь вид:
+     * function (ActiveQuery $query, $startTime, $endTime) {
+     *   return $query;
+     * }
+     * Фильтрация по датам применяется вне зависимости от наличия этого параметра
+     */
+    public $filter;
 
     /**
      * @inheritdoc
@@ -69,6 +80,12 @@ class ActiveRecordCalendar extends Component implements CalendarInterface
                     date('Y-m-d H:i:s', $endTime),
                 ],
             ]);
+        if (is_callable($this->filter)) {
+            $resultQuery = call_user_func($this->filter, $query, $startTime, $endTime);
+            if ($resultQuery instanceof ActiveQuery) {
+                $query = $resultQuery;
+            }
+        }
         /** @var ItemInterface[] $models */
         $models = $query->all();
         foreach ($models as $model) {
