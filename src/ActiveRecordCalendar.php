@@ -85,6 +85,8 @@ class ActiveRecordCalendar extends Component implements CalendarInterface
             if ($resultQuery instanceof ActiveQuery) {
                 $query = $resultQuery;
             }
+        } elseif (is_array($this->filter)) {
+            $query->andWhere($this->filter);
         }
         /** @var ItemInterface[] $models */
         $models = $query->all();
