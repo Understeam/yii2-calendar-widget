@@ -65,6 +65,19 @@ class ActiveRecordCalendar extends Component implements CalendarInterface
     public function findItems($startTime, $endTime)
     {
         $modelClass = $this->modelClass;
+        $column = $modelClass::getTableSchema()->getColumn($this->dateAttribute);
+        if ($column === null) {
+            throw new InvalidConfigException("Column {$column} does not exist in {$modelClass}");
+        }
+        if ($column->type == 'datetime' || $column->type == 'timestamp') {
+            $date = function ($timestamp) {
+                return date('Y-m-d H:i:s', $timestamp);
+            };
+        } else {
+            $date = function ($timestamp) {
+                return $timestamp;
+            };
+        }
         $query = $modelClass::find();
         $query
             ->andWhere([
@@ -72,12 +85,12 @@ class ActiveRecordCalendar extends Component implements CalendarInterface
                 [
                     '>=',
                     $this->dateAttribute,
-                    date('Y-m-d H:i:s', $startTime),
+                    $date($startTime),
                 ],
                 [
                     '<',
                     $this->dateAttribute,
-                    date('Y-m-d H:i:s', $endTime),
+                    $date($endTime),
                 ],
             ]);
         if (is_callable($this->filter)) {
