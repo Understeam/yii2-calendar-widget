@@ -14,6 +14,9 @@ use yii\db\ActiveRecord;
 
 /**
  * Класс, который позволяет легко использовать ActiveRecord в качестве объекта календаря
+ *
+ * @property string $dateAttributeType тип атрибута в БД. integer или date
+ *
  * @author Anatoly Rugalev
  * @link https://github.com/AnatolyRugalev
  */
