@@ -26,7 +26,7 @@ trait ActiveRecordItemTrait
      */
     public function getTimestamp()
     {
-        return strtotime($this->{$this->_calendar->dateAttribute});
+        return $this->_calendar->dateToTimestamp($this->{$this->_calendar->dateAttribute});
     }
 
     /**

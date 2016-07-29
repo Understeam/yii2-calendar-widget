@@ -45,6 +45,11 @@ class ActiveRecordCalendar extends Component implements CalendarInterface
      */
     public $filter;
 
+    const TYPE_INTEGER = 'integer';
+    const TYPE_DATE = 'date';
+
+    private $_dateAttributeType;
+
     /**
      * @inheritdoc
      */
@@ -59,25 +64,52 @@ class ActiveRecordCalendar extends Component implements CalendarInterface
         }
     }
 
+    public function getDateAttributeType()
+    {
+        if (!isset($this->_dateAttributeType)) {
+            $modelClass = $this->modelClass;
+            $column = $modelClass::getTableSchema()->getColumn($this->dateAttribute);
+            if ($column === null) {
+                throw new InvalidConfigException("Column {$column} does not exist in {$modelClass}");
+            }
+            if ($column->type == 'datetime' || $column->type == 'timestamp') {
+                $this->_dateAttributeType = self::TYPE_DATE;
+            } else {
+                $this->_dateAttributeType = self::TYPE_INTEGER;
+            }
+        }
+        return $this->_dateAttributeType;
+    }
+
+    public function setDateAttributeType($type)
+    {
+        $this->_dateAttributeType = $type;
+    }
+
+    public function dateToTimestamp($date)
+    {
+        if ($this->getDateAttributeType() == self::TYPE_INTEGER) {
+            return $date;
+        } else {
+            return strtotime($date);
+        }
+    }
+
+    public function timestampToDate($timestamp)
+    {
+        if ($this->getDateAttributeType() == self::TYPE_INTEGER) {
+            return $timestamp;
+        } else {
+            return date('Y-m-d H:i:s', $timestamp);
+        }
+    }
+
     /**
      * @inheritdoc
      */
     public function findItems($startTime, $endTime)
     {
         $modelClass = $this->modelClass;
-        $column = $modelClass::getTableSchema()->getColumn($this->dateAttribute);
-        if ($column === null) {
-            throw new InvalidConfigException("Column {$column} does not exist in {$modelClass}");
-        }
-        if ($column->type == 'datetime' || $column->type == 'timestamp') {
-            $date = function ($timestamp) {
-                return date('Y-m-d H:i:s', $timestamp);
-            };
-        } else {
-            $date = function ($timestamp) {
-                return $timestamp;
-            };
-        }
         $query = $modelClass::find();
         $query
             ->andWhere([
@@ -85,12 +117,12 @@ class ActiveRecordCalendar extends Component implements CalendarInterface
                 [
                     '>=',
                     $this->dateAttribute,
-                    $date($startTime),
+                    $this->timestampToDate($startTime),
                 ],
                 [
                     '<',
                     $this->dateAttribute,
-                    $date($endTime),
+                    $this->timestampToDate($endTime),
                 ],
             ]);
         if (is_callable($this->filter)) {
