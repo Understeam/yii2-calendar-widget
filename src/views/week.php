@@ -16,7 +16,7 @@ echo $this->render($context->headerView);
         <div class="calendar-week-header-cell">
             <?= Yii::$app->formatter->asDate($time->date->getTimestamp(), 'E') ?>
             <?php
-            $count = CalendarHelper::getWeekColumnCount($grid, $column);
+            $count = CalendarHelper::getColumnItemsCount($grid, $column);
             ?>
             <?php if ($count > 0): ?>
                 <span class="badge"><?= $count ?></span>

@@ -1,5 +1,5 @@
 .calendar-month-header-cell {
-  width: 14.2%;
+  width: 12.5%;
   float: left;
   position: relative;
   min-height: 1px;
@@ -23,7 +23,7 @@
   font-size: 20px; }
 
 .calendar-month-cell {
-  width: 14.2%;
+  width: 12.5%;
   float: left;
   position: relative;
   min-height: 1px;
@@ -41,8 +41,9 @@
     padding: 0;
     text-align: center;
     line-height: 90px;
-    font-size: 30px;
-    background-color: #ffedee; }
+    font-size: 30px; }
+    .calendar-month-cell .panel-body.future, .calendar-month-cell .panel-body.past {
+      background-color: #ffedee; }
     .calendar-month-cell .panel-body.hover {
       background-color: #e9f4ff; }
       .calendar-month-cell .panel-body.hover::after {
@@ -76,8 +77,9 @@
     padding: 0;
     text-align: center;
     line-height: 50px;
-    font-size: 20px;
-    background-color: #ffedee; }
+    font-size: 20px; }
+    .calendar-week-column .panel-body.future, .calendar-week-column .panel-body.past {
+      background-color: #ffedee; }
     .calendar-week-column .panel-body.hover {
       background-color: #e9f4ff; }
       .calendar-week-column .panel-body.hover::after {

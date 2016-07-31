@@ -145,7 +145,7 @@ class CalendarHelper
         return new DatePeriod($period->getStartDate(), new DateInterval('PT' . $precision . 'M'), $period->getEndDate());
     }
 
-    public static function getMonthColumnCount($grid, $column)
+    public static function getRowItemsCount($grid, $column)
     {
         $count = 0;
         foreach ($grid as $row) {
@@ -155,7 +155,7 @@ class CalendarHelper
         return $count;
     }
 
-    public static function getWeekColumnCount($grid, $column)
+    public static function getColumnItemsCount($grid, $column)
     {
         $count = 0;
         foreach ($grid[$column] as $cell) {

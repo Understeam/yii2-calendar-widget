@@ -18,7 +18,7 @@
   @include cell
 
 @mixin month-cell
-  width: 14.2%
+  width: 12.5%
   @include cell
 
 @mixin panel-cell($height, $fontSize)
@@ -27,7 +27,8 @@
   text-align: center
   line-height: $height
   font-size: $fontSize
-  background-color: #ffedee
+  &.future, &.past
+    background-color: #ffedee
   &.hover
     background:
       color: #e9f4ff
