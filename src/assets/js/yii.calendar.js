@@ -60,14 +60,14 @@
                     .on('click.yiiCalendar', settings.itemSelector, function (event) {
                         event.preventDefault();
                         var item = $(this);
-                        var date = item.attr('data-cal-date');
+                        var date = item.attr('data-cal-date'); 
+						var time = item.attr('data-cal-time') || undefined;
+                        
                         if (!date) {
                             console.warn("data-cal-date attribute is not set");
                             return;
                         }
-                        var parts = date.split(' ');
-                        date = parts[0];
-                        var time = parts[1] || undefined;
+                       
                         if (typeof settings.onClick == 'function' && item.hasClass(settings.activeClass)) {
                             settings.onClick(date, time);
                         } else if (typeof settings.onFutureClick == 'function' && item.hasClass(settings.futureClass)) {
