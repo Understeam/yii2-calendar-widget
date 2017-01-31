@@ -70,6 +70,11 @@ class CalendarWidget extends Widget
     public $period;
 
     /**
+     * @var cellDatePeriod формат передаваемых дат
+     */
+    public $cellDateFormat = 'Y-m-d';
+
+    /**
      * @var string Action, на который будет производиться переход по ссылкам. По умолчанию текущий
      */
     public $action;
@@ -174,7 +179,7 @@ class CalendarWidget extends Widget
         return $date;
     }
 
-    public function getPeriodString()
+    public function getPeriod()
     {
         $firstDay = $this->period->getStartDate();
         $lastDay = $this->period->getEndDate();
@@ -198,13 +203,38 @@ class CalendarWidget extends Widget
             $right[] = Yii::$app->formatter->asDate($lastDay, 'YYYY');
         }
 
-        $string = implode(' ', $left) . ' — ' . implode(' ', $right);
-        if (count($common)) {
-            $string .= ' ' . implode(' ', $common);
+		return [
+            'left' => $left,
+            'right' => $right,
+            'common' => $common,
+        ];
+    }
+
+    public function getPeriodString()
+    {
+        $arrPeriod = $this->getPeriod();
+        $string = implode(' ', $arrPeriod['left']) . ' — ' . implode(' ', $arrPeriod['right']);
+        if (count($arrPeriod['common'])) {
+            $string .= ' ' . implode(' ', $arrPeriod['common']);
         }
         return $string;
     }
 
+    public function getPrevString()
+    {
+        $arrPeriod = $this->getPeriod();
+        return implode(' ', $arrPeriod['left']);
+    }
+
+    public function getNextString()
+    {
+        $arrPeriod = $this->getPeriod();
+        if (count($arrPeriod['common'])) {
+            return implode(' ', $arrPeriod['right']) . ' ' . implode(' ', $arrPeriod['common']);
+        }
+        return implode(' ', $arrPeriod['right']);
+    }
+	
     protected function registerAssets()
     {
         $id = $this->getId();
@@ -252,8 +282,11 @@ class CalendarWidget extends Widget
     public function getCellOptions(GridCell $cell, $addTime = false)
     {
         $options = [
-            'data-cal-date' => $cell->date->format('Y-m-d' . ($addTime ? ' H:i' : '')),
+            'data-cal-date' => Yii::$app->formatter->asDate($cell->date, 'php:' .$this->cellDateFormat),
         ];
+        if ($addTime) {
+            $options['data-cal-time'] = $cell->date->format('H');
+        }
         if (!$this->isInPeriod($cell->date)) {
             Html::addCssClass($options, 'out');
         }
