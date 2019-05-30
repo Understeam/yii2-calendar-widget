@@ -7,14 +7,14 @@
 
 namespace understeam\calendar;
 
-use yii\base\Object;
+use yii\base\BaseObject;
 
 /**
  * Class CalendarGridCell TODO: Write class description
  * @author Anatoly Rugalev
  * @link https://github.com/AnatolyRugalev
  */
-class GridCell extends Object
+class GridCell extends BaseObject
 {
 
     public $date;
